@@ -4,8 +4,6 @@ import { fetchCountries } from './fetchCountries';
 var debounce = require('lodash.debounce');
 const DEBOUNCE_DELAY = 300;
 let items = [];
-const filterUrl =
-  'https://restcountries.com/v2/name?fields=name,capital,population,flags,languages';
 
 const options = {
   //      name[official], // - повна назва країни
@@ -33,3 +31,16 @@ const queryHandle = () => {
 refs.queryRef.addEventListener('input', debounce(queryHandle, DEBOUNCE_DELAY));
 
 const getItemTemplate = () => `<li></li>`;
+
+export function fetchCountries(name) {
+  fetch(`${URL}${name}`).then(resp =>
+    resp.json().then(data => {
+      console.log(data);
+    })
+  );
+}
+
+const URL = 'https://restcountries.com/v2/name/';
+
+const filterUrl =
+  'https://restcountries.com/v2/name?fields=name,capital,population,flags,languages';
