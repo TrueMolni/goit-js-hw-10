@@ -2,17 +2,21 @@ import './css/styles.css';
 import { fetchCountries } from './fetchCountries';
 import debounce from 'lodash.debounce';
 import { Notify } from 'notiflix';
+// імпорти
 
+//глобальні змінні
 const DEBOUNCE_DELAY = 300;
 let userQuery = '';
 let items = [];
 
+// посилання на елементи DOM
 const refs = {
   queryRef: document.querySelector('#search-box'),
   listRef: document.querySelector('.country-list'),
   infoRef: document.querySelector('.country-info'),
 };
 
+// оновлює розмітку
 const render = () => {
   console.log(items);
 
@@ -20,6 +24,7 @@ const render = () => {
   refs.infoRef.innerHTML = '';
 };
 
+// опрацьовуємо текст користувача і чистимо розмітку, якщо порожньо
 const queryHandle = event => {
   userQuery = event.target.value.trim();
   if (userQuery === '') {
@@ -27,6 +32,8 @@ const queryHandle = event => {
     return;
   }
 
+  // опрацьовуємо запит, в залежності від розміру вхідних робимо розмітку інфо про одну країу, про список країн
+  // викликаємо помилку, якщо запит повернув 404(якщо немає змінних для розмітки)
   fetchCountries(userQuery)
     .then(data => {
       items = data;
@@ -51,8 +58,10 @@ const queryHandle = event => {
     .catch(ifError);
 };
 
+// підписуємось на слухача події інпуту, для опрацювання тексту користувача
 refs.queryRef.addEventListener('input', debounce(queryHandle, DEBOUNCE_DELAY));
 
+// створення шаблону розмітки списку країн
 const getItemTemplate = ({ flags, name }) =>
   `
   <li>
@@ -62,6 +71,7 @@ const getItemTemplate = ({ flags, name }) =>
 </ul>
 `;
 
+// створення шаблону розмітки контейнеру даних про одну країну
 const getInfoTemplate = ({ name, population, capital, flags }) => {
   const lang = Object.values(items[0].languages).join(', ');
   return `
@@ -75,18 +85,21 @@ const getInfoTemplate = ({ name, population, capital, flags }) => {
 `;
 };
 
+// створємо розмітку елементів списку країн на основі шаблону і виводимо на екран
 function createList() {
   const markup = items.map(getItemTemplate);
   render();
   refs.listRef.insertAdjacentHTML('beforeend', markup.join(''));
 }
 
+// створємо розмітку контейнеру однієї  країни на основі шаблону і виводимо на екран цю країну
 function createInfo() {
   const markup = items.map(getInfoTemplate);
   render();
   refs.infoRef.insertAdjacentHTML('beforeend', markup.join(''));
 }
 
+// якщо ми отримали помилку, виводимо повідомлення через бібліотеку Notify
 function ifError() {
   render();
   Notify.failure('Oops, there is no country with that name.');
