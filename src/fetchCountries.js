@@ -1,12 +1,9 @@
 export function fetchCountries(name) {
-  fetch(`${URL}${name}`).then(resp =>
-    resp.json().then(data => {
-      console.log(data);
-    })
+  return fetch(`${URL}${name}${filterUrl}`).then(resp =>
+    resp.json().then(data => data)
   );
 }
 
-const URL = 'https://restcountries.com/v2/name/';
+const URL = 'https://restcountries.com/v3.1/name/';
 
-const filterUrl =
-  'https://restcountries.com/v2/name?fields=name,capital,population,flags,languages';
+const filterUrl = '?fields=name,capital,population,flags,languages';
