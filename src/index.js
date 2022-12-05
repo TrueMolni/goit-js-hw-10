@@ -77,7 +77,7 @@ const getInfoTemplate = ({ name, population, capital, flags }) => {
   const lang = Object.values(items[0].languages).join(', ');
   return `
 <div>
-  <img src=${flags.svg} alt="" />
+  <img src=${flags.svg} alt="flag" style=" width: 400px;"/>
   <h1>${name.official}</h1>
   <h2>Population: ${population}</h2>
   <h2>Capital: ${capital}</h2>
