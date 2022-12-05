@@ -64,7 +64,8 @@ refs.queryRef.addEventListener('input', debounce(queryHandle, DEBOUNCE_DELAY));
 // створення шаблону розмітки списку країн
 const getItemTemplate = ({ flags, name }) =>
   `
-  <li style=" display: flex;">
+  <li style=" display: flex; margin: 5px;
+}">
     <img src=${flags.svg} alt="flag" style=" width: 90px;" />
     <p style=" padding: 5px;">${name.official}</p>
   </li>
